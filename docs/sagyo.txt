@@ -1,0 +1,92 @@
+# 2015/10/16
+
+・MySQLのストレージエンジンの確認
+use information_schema;
+select * from tables where = 'book';
+select table_name, engin from tables where = 'book';
+
+多少違う設定になっているかも。
+インストール時に設定する方法はあるのか。
+
+・トランザクション処理の追加
+
+	EntityTransaction tx = em.getTransaction();
+	tx.begin();
+
+	処理
+
+	tx.commit();
+
+・beans-webmvc.xml編集
+
+    xmlns:tx="http://www.springframework.org/schema/tx"
+
+・pom.xml
+  	<dependency>
+  		<groupId>org.springframework</groupId>
+  		<artifactId>spring-tx</artifactId>
+  		<version>4.2.0.RELEASE</version>
+  	</dependency>
+
+# 2015/10/18
+
+・一覧表示
+  JSTLの利用
+
+・pom.xml
+  	<dependency>
+  		<groupId>javax.servlet</groupId>
+  		<artifactId>jstl</artifactId>
+  		<version>1.2</version>
+  		<scope>provided</scope>
+  	</dependency>
+
+・更新処理の追加
+文字化けした。web.xmlのfilter部分に以下の設定を
+追加する。
+
+  <filter>
+    <filter-name>characterEncodingFilter</filter-name>
+    <filter-class>
+      org.springframework.web.filter.CharacterEncodingFilter
+    </filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+    <init-param>
+      <param-name>forceEncoding</param-name>
+      <param-value>true</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>characterEncodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>  <servlet>
+
+
+TO SOLVE
+　環境によりem.persistで登録できない場合がある。
+
+# 2015/12/02
+ファイルアップロード
+Web.xmlに以下の文言を追加
+
+ <multipart-config>
+  <location>/tmp</location>
+  <max-file-size>1000000</max-file-size>
+  <max-request-size>1000000</max-request-size>
+  <file-size-threshold>10000</file-size-threshold>
+ </multipart-config>
+
+ spring-context.xmlに以下の文言を追加
+ <bean id="multipartResolver"
+ class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
+</bean>
+
+# 2015/12/06 Sun.
+ファイルダウンロード
+文字化け対応にてこずる
+RequestMappingのパラメータに
+produces="text/csv;charset=utf-8"
+を指定すればよいことが分かり解決。
