@@ -35,25 +35,28 @@ CREATE TABLE m_book
 	kana_name varchar(300) COMMENT '名称かな',
 	author_name varchar(300) COMMENT '著者名',
 	publisher varchar(150) COMMENT '発行所',
+	-- 例：A4
 	paper_size varchar(20) COMMENT '版型',
+	-- 例：岩波文庫
 	series varchar(150) COMMENT 'シリーズ',
 	-- 0: 単行本, 1, 巻数本
 	is_part_flg char(1) COMMENT '巻数本フラグ',
 	number int COMMENT '巻数',
 	total_volume int COMMENT '総巻数',
+	-- 例：1997
 	publish_year int COMMENT '発行年',
-	edition_type char(1) COMMENT '版区分',
-	edition_number int COMMENT '版数',
+	-- 例：第2版
+	edition_disp varchar(20) COMMENT '版表示',
+	-- 例：1997年5月30日 第2版第1刷発行
 	edition_info varchar(150) COMMENT '版情報',
 	isbn varchar(20) COMMENT 'ISBN',
-	bound_side varchar(20) COMMENT '綴じ側',
 	pages int COMMENT 'ページ数',
-	height decimal COMMENT '縦',
-	width decimal COMMENT '横',
-	depth decimal COMMENT '幅',
-	weight decimal COMMENT '重量(g)',
+	height decimal(5,1) COMMENT '縦(mm)',
+	width decimal(5,1) COMMENT '横(mm)',
+	depth decimal(5,1) COMMENT '幅(mm)',
+	weight decimal(5,1) COMMENT '重量(g)',
 	PRIMARY KEY (id),
-	UNIQUE (book_code, number, edition_number)
+	UNIQUE (book_code, number, edition_disp)
 ) COMMENT = '書籍マスタ';
 
 
@@ -82,6 +85,7 @@ CREATE TABLE m_book_bak
 	kana_name varchar(300) COMMENT '名称かな',
 	author_name varchar(300) COMMENT '著者名',
 	publisher varchar(150) COMMENT '発行所',
+	-- 例：岩波文庫
 	series varchar(150) COMMENT 'シリーズ',
 	-- 0: 単行本, 1, 巻数本
 	is_part_flg char(1) COMMENT '巻数本フラグ',
@@ -95,13 +99,15 @@ CREATE TABLE m_book_bak
 	this_edit_first_year int(4) COMMENT 'この版の初刷発行年',
 	copy_right varchar(100) COMMENT 'コピーライト',
 	isbn varchar(20) COMMENT 'ISBN',
+	-- 0:右、1:左
 	bound_side varchar(20) COMMENT '綴じ側',
 	pages int COMMENT 'ページ数',
+	-- 例：A4
 	paper_size varchar(20) COMMENT '版型',
-	height decimal COMMENT '縦',
-	width decimal COMMENT '横',
-	depth decimal COMMENT '幅',
-	weight decimal COMMENT '重量(g)',
+	height decimal(5,1) COMMENT '縦(mm)',
+	width decimal(5,1) COMMENT '横(mm)',
+	depth decimal(5,1) COMMENT '幅(mm)',
+	weight decimal(5,1) COMMENT '重量(g)',
 	cycle varchar(20) COMMENT '雑誌用サイクル',
 	mz_volume int COMMENT '雑誌用巻数',
 	mz_number int COMMENT '雑誌用号数',
