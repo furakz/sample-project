@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.greenhouse9.bookmaster.persistence.BooksMapper">
+  <resultMap id="booksListMap" type="com.greenhouse9.bookmaster.domain.Books">
+    <result column="ID"          jdbcType="DECIMAL" property="id"/>
+    <result column="BOOK_CODE"   jdbcType="VARCHAR" property="bookCode"/>
+    <result column="NAME"        jdbcType="VARCHAR" property="name"/>
+    <result column="NAME2"       jdbcType="VARCHAR" property="name2"/>
+    <result column="KANA_NAME"   jdbcType="VARCHAR" property="kanaName"/>
+    <result column="AUTHOR_NAME" jdbcType="VARCHAR" property="authorName"/>
+    <result column="PUBLISHER"   jdbcType="VARCHAR" property="publisher"/>
+    <result column="PAPER_SIZE"  jdbcType="VARCHAR" property="paperSize"/>
+    <result column="SERIES"      jdbcType="VARCHAR" property="series"/>
+    <result column="IS_PART_FLG" jdbcType="CHAR"    property="isPartFlg"/>
+    <result column="NUMBER"      jdbcType="DECIMAL" property="number"/>
+    <result column="TOTAL_VOLUME" jdbcType="DECIMAL" property="totalVolume"/>
+    <result column="PUBLISH_YEAR" jdbcType="DECIMAL" property="publishYear"/>
+    <result column="EDITION_DISP" jdbcType="VARCHAR" property="editionDisp"/>
+    <result column="EDITION_INFO" jdbcType="VARCHAR" property="editionInfo"/>
+    <result column="ISBN"        jdbcType="VARCHAR" property="isbn"/>
+    <result column="PAGES"       jdbcType="DECIMAL" property="pages"/>
+    <result column="HEIGHT"      jdbcType="DECIMAL" property="height"/>
+    <result column="WIDTH"       jdbcType="DECIMAL" property="width"/>
+    <result column="DEPTH"       jdbcType="DECIMAL" property="depth"/>
+    <result column="WEIGHT"      jdbcType="DECIMAL" property="weight"/>
+  </resultMap>
+  <select id="selectBook" resultMap="booksListMap">
+    select
+      t.id,
+      t.book_code,
+      t.name,
+      t.name2,
+      t.kana_name,
+      t.author_name,
+      t.publisher,
+      t.paper_size,
+      t.series,
+      t.is_part_flg,
+      t.number,
+      t.total_volume,
+      t.publish_year,
+      t.edition_disp,
+      t.edition_info,
+      t.isbn,
+      t.pages,
+      t.height,
+      t.width,
+      t.depth,
+      t.weight
+    from m_book t
+    where
+      id = #{id}
+  </select>
+  <select id="selectAllBooks" resultType="com.greenhouse9.bookmaster.domain.Books">
+    select
+      t.id,
+      t.book_code,
+      t.name,
+      t.name2,
+      t.kana_name,
+      t.author_name,
+      t.publisher,
+      t.paper_size,
+      t.series,
+      t.is_part_flg,
+      t.number,
+      t.total_volume,
+      t.publish_year,
+      t.edition_disp,
+      t.edition_info,
+      t.isbn,
+      t.pages,
+      t.height,
+      t.width,
+      t.depth,
+      t.weight
+    from m_book t
+  </select>
+  <select id="selectByCondition" parameterType="java.util.Map" resultType="com.greenhouse9.bookmaster.domain.Books">
+    select
+      t.id,
+      t.book_code,
+      t.name,
+      t.name2,
+      t.kana_name,
+      t.author_name,
+      t.publisher,
+      t.paper_size,
+      t.series,
+      t.is_part_flg,
+      t.number,
+      t.total_volume,
+      t.publish_year,
+      t.edition_disp,
+      t.edition_info,
+      t.isbn,
+      t.pages,
+      t.height,
+      t.width,
+      t.depth,
+      t.weight
+    from
+      book t
+  <where>
+    <if test="name != null and name.length() &gt; 0">
+    t.name like concat('%', #{name, javaType=String, jdbcType=VARCHAR}, '%')
+    </if>
+    <if test="kanaName != null">
+    and t.kana_name like concat('%', #{kanaName, javaType=String, jdbcType=VARCHAR}, '%')
+    </if>
+    <if test="authorName != null">
+    and t.author_name like concat('%', #{authorName, javaType=String, jdbcType=VARCHAR}, '%')
+    </if>
+    <if test="publisher != null">
+    and t.publisher like concat('%', #{publisher, javaType=String, jdbcType=VARCHAR}, '%')
+    </if>
+    <if test="isbn != null">
+    and t.isbn = #{isbn}
+    </if>
+  </where>
+  </select>
+  <insert id="insert" >
+  INSERT INTO M_BOOK
+  (
+    ID,
+    BOOK_CODE,
+    NAME,
+    NAME2,
+    KANA_NAME,
+    AUTHOR_NAME,
+    PUBLISHER,
+    PAPER_SIZE,
+    SERIES,
+    IS_PART_FLG,
+    NUMBER,
+    TOTAL_VOLUME,
+    PUBLISH_YEAR,
+    EDITION_DISP,
+    EDITION_INFO,
+    ISBN,
+    PAGES,
+    HEIGHT,
+    WIDTH,
+    DEPTH,
+    WEIGHT
+  )
+  VALUES
+  (
+    #{id},
+    #{bookCode},
+    #{name},
+    #{name2},
+    #{kanaName},
+    #{authorName},
+    #{publisher},
+    #{paperSize},
+    #{series},
+    #{isPartFlg},
+    #{number},
+    #{totalVolume},
+    #{publishYear},
+    #{editionDisp},
+    #{editionInfo},
+    #{isbn},
+    #{pages},
+    #{height},
+    #{width},
+    #{depth},
+    #{weight}
+  )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.greenhouse9.bookmaster.domain.Books">
+  UPDATE M_BOOK
+  SET
+    BOOK_CODE = #{bookCode},
+    NAME      = #{name},
+    NAME2     = #{name2},
+    KANA_NAME = #{kanaName},
+    AUTHOR_NAME = #{authorName},
+    PUBLISHER   = #{publisher},
+    PAPER_SIZE  = #{paperSize},
+    SERIES      = #{series},
+    IS_PART_FLG = #{isPartFlg},
+    NUMBER      = #{number},
+    TOTAL_VOLUME = #{totalVolume},
+    PUBLISH_YEAR = #{publishYear},
+    EDITION_DISP = #{editionDisp},
+    EDITION_INFO = #{editionInfo},
+    ISBN        = #{isbn},
+    PAGES       = #{pages},
+    HEIGHT      = #{height},
+    WIDTH       = #{width},
+    DEPTH       = #{depth},
+    WEIGHT      = #{weight}
+  WHERE
+    ID = #{id}
+  </update>
+</mapper>
