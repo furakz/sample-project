@@ -19,6 +19,8 @@ import com.greenhouse9.bookmaster.domain.Book;
 import com.greenhouse9.bookmaster.domain.BookHelper;
 import com.greenhouse9.bookmaster.domain.BookInput;
 import com.greenhouse9.bookmaster.domain.Books;
+import com.greenhouse9.bookmaster.domain.BooksHelper;
+import com.greenhouse9.bookmaster.domain.BooksInput;
 import com.greenhouse9.bookmaster.persistence.BooksMapper;
 
 @Service
@@ -71,6 +73,7 @@ public class BooksService {
 
         mapper = session.getMapper(BooksMapper.class);
 
+        System.out.println("BooksService#insert " + record.getId());
         mapper.insert(record);
 
         session.commit();
@@ -100,13 +103,15 @@ public class BooksService {
 		return book;
 	}
 
-	public Book create(BookInput bookInput) throws IOException {
+	public Books create(BooksInput booksInput) throws IOException {
 
-		BookHelper helper = new BookHelper();
-		Book book = helper.getBook(bookInput);
-		//insert(book);
+		BooksHelper helper = new BooksHelper();
+		Books books = new Books();
+		helper.bind(booksInput,books);
 
-		return book;
+		insert(books);
+
+		return books;
 	}
 
 	public void upload(String filepath, String errpath) {
@@ -143,7 +148,7 @@ public class BooksService {
 				}
 
 				if (book2 == null) {
-					create(book);
+					//create(book);
 				} else {
 					update(book);
 				}

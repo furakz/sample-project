@@ -53,7 +53,7 @@
     where
       id = #{id}
   </select>
-  <select id="selectAllBooks" resultType="com.greenhouse9.bookmaster.domain.Books">
+  <select id="selectAllBooks" resultMap="booksListMap">
     select
       t.id,
       t.book_code,
@@ -78,7 +78,7 @@
       t.weight
     from m_book t
   </select>
-  <select id="selectByCondition" parameterType="java.util.Map" resultType="com.greenhouse9.bookmaster.domain.Books">
+  <select id="selectByCondition" parameterType="java.util.Map"  resultMap="booksListMap">
     select
       t.id,
       t.book_code,
@@ -102,21 +102,21 @@
       t.depth,
       t.weight
     from
-      book t
+      m_book t
   <where>
     <if test="name != null and name.length() &gt; 0">
     t.name like concat('%', #{name, javaType=String, jdbcType=VARCHAR}, '%')
     </if>
-    <if test="kanaName != null">
+    <if test="kanaName != null and kanaName.length() &gt; 0">
     and t.kana_name like concat('%', #{kanaName, javaType=String, jdbcType=VARCHAR}, '%')
     </if>
-    <if test="authorName != null">
+    <if test="authorName != null and authorName.length() &gt; 0">
     and t.author_name like concat('%', #{authorName, javaType=String, jdbcType=VARCHAR}, '%')
     </if>
-    <if test="publisher != null">
+    <if test="publisher != null and publisher.length() &gt; 0">
     and t.publisher like concat('%', #{publisher, javaType=String, jdbcType=VARCHAR}, '%')
     </if>
-    <if test="isbn != null">
+    <if test="isbn != null and isbn.length() &gt; 0">
     and t.isbn = #{isbn}
     </if>
   </where>
